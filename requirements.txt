@@ -1,0 +1,16 @@
+duckdb==1.0.0
+gspread==6.1.2
+gspread_dataframe==4.0.0
+gspread_formatting==1.2.0
+numpy==1.26.4
+pandas==1.5.3
+pandasql==0.7.3
+Pillow==10.4.0
+pytest==8.2.2
+Requests==2.32.3
+setuptools==70.2.0
+sql_metadata==2.12.0
+streamlit==1.36.0
+streamlit_authenticator==0.3.2
+streamlit_lottie==0.0.5
+validators==0.31.0
