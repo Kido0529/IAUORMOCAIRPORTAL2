@@ -59,7 +59,6 @@ credentials = { "type" : st.secrets["gcp_service_account"]["type"],
                 "client_x509_cert_url" : st.secrets["gcp_service_account"]["client_x509_cert_url"],
                 "universe_domain" : st.secrets["gcp_service_account"]["universe_domain"],
                 }
-st.write(credentials)
 gc = gs.service_account_from_dict(credentials)
 sh = gc.open("Sample-Maintenance-Log")
 worksheet = sh.sheet1
