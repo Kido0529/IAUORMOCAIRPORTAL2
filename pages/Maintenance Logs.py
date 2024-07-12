@@ -43,6 +43,7 @@ if not check_password():
     st.stop()
 
 # Main Streamlit app starts here
+# noinspection PyInterpreter
 st.set_page_config(page_title="Maintenance Logs", page_icon="🔧", layout="wide")
 
 
@@ -70,66 +71,69 @@ with st.container():
     st.write("----")
     st.header("Maintenance Logs")
     st.write("")
-    col1, col2 = st.columns([2,3])
+    col1, col2 = st.columns([4,5])
     rowvalraw = worksheet.row_values(5)
     rowlen = len(data)
     with col1:
-        st.table(data)
+        st.dataframe(data)
 
     with col2:
         with st.form("Add Log", border=True):
             st.subheader("Add Log")
-            fcol1, fcol2, fcol3, fcol4, fcol5, fcol6, fcol7 = st.columns(7)
+            fcol1, fcol2, fcol3, fcol4, fcol5, fcol6, fcol7 = st.columns([1.5,1.5,1.5,3,3,3,3])
             with fcol1:
                 year_input = st.number_input(
                     "Year",
                     placeholder="Enter Year",
                     min_value=2000,
                     max_value=2030,
+                    step=1,
                 )
 
 
             with fcol2:
                 month_input = st.number_input(
-                    "month",
+                    "Month",
                     placeholder="Enter month",
                     min_value = 1,
                     max_value = 12,
+                    step=1,
                 )
 
             with fcol3:
                 day_input = st.number_input(
-                    "day",
+                    "Day",
                     placeholder="Enter day",
                     min_value=1,
                     max_value=31,
+                    step=1,
                 )
 
             with fcol4:
                 ac_input = st.text_input(
                     "A/C Model",
-                    placeholder="Enter A/C Model",
+                    placeholder="A/C Model",
                 )
 
             with fcol5:
                 reg_input = st.text_input(
                     "Registration",
-                    placeholder="Enter Registration",
+                    placeholder="Registration",
                 )
 
             with fcol6:
                 main_input = st.text_input(
                     "Maintenance",
-                    placeholder="Enter Maintenance Done",
+                    placeholder="Maintenance Done",
                 )
 
             with fcol7:
                 signed_input = st.text_input(
                     "Inspected By:",
-                    placeholder="Enter Inspector Name",
+                    placeholder="Inspector Name",
                 )
 
-            if st.form_submit_button(label="Update Table", type="secondary", disabled=False, use_container_width=False):
+            if st.form_submit_button(label="Update Table", type="secondary", disabled=False, use_container_width=True):
                 cellrow = rowlen + 1
                 yearcolumn = 1
                 monthcolumn = 2
@@ -146,3 +150,4 @@ with st.container():
                 worksheet.update_cell(cellrow, maincolumn, main_input)
                 worksheet.update_cell(cellrow, signedcolumn, signed_input)
                 st.success("Table Updated")
+                st.rerun()
