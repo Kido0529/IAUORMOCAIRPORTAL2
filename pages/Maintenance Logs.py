@@ -3,6 +3,8 @@ import gspread as gs
 import streamlit as st
 import numpy
 
+# Main Streamlit app starts here
+st.set_page_config(page_title="Maintenance Logs", page_icon="🔧", layout="wide")
 
 def check_password():
     """Returns `True` if the user had a correct password."""
@@ -48,8 +50,6 @@ if not check_password():
     st.stop()
 
 # Main Streamlit app starts here
-# noinspection PyInterpreter
-st.set_page_config(page_title="Maintenance Logs", page_icon="🔧", layout="wide")
 
 
 # ---- Connection to Database ----
