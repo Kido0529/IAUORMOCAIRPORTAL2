@@ -9,10 +9,15 @@ def check_password():
 
     def login_form():
         """Form with widgets to collect user information"""
-        with st.form("Credentials"):
-            st.text_input("Username", key="username")
-            st.text_input("Password", type="password", key="password")
-            st.form_submit_button("Log in", on_click=password_entered)
+        with st.container():
+            logincol1, logincol2 = st.columns([2,1])
+            with logincol1:
+                st.write("")
+            with logincol2:
+                with st.form("Credentials"):
+                    st.text_input("Username", key="username")
+                    st.text_input("Password", type="password", key="password")
+                    st.form_submit_button("Log in", on_click=password_entered)
 
     def password_entered():
         """Checks whether a password entered by the user is correct."""
