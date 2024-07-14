@@ -4,7 +4,7 @@ import streamlit as st
 import numpy
 
 # Main Streamlit app starts here
-st.set_page_config(page_title="Maintenance Logs", page_icon="🔧", layout="wide")
+st.set_page_config(page_title="Inventory", page_icon="📥", layout="wide")
 
 def check_password():
     """Returns `True` if the user had a correct password."""
@@ -67,14 +67,14 @@ credentials = { "type" : st.secrets["gcp_service_account"]["type"],
                 }
 gc = gs.service_account_from_dict(credentials)
 sh = gc.open("Sample-Maintenance-Log")
-worksheet = sh.get_worksheet(0)
+worksheet = sh.get_worksheet(1)
 data = worksheet.get_all_values()
 
 
 # ---- Data Table and Edit ----
 with st.container():
     st.write("----")
-    st.header("Maintenance Logs")
+    st.header("Inventory")
     st.write("")
     col1, col2 = st.columns([4,5])
     rowvalraw = worksheet.row_values(5)
@@ -116,26 +116,26 @@ with st.container():
 
             with fcol4:
                 ac_input = st.text_input(
-                    "A/C Model",
-                    placeholder="A/C Model",
+                    "Item - ID",
+                    placeholder="Item - ID",
                 )
 
             with fcol5:
                 reg_input = st.text_input(
-                    "Registration",
-                    placeholder="Registration",
+                    "Item",
+                    placeholder="Item",
                 )
 
             with fcol6:
                 main_input = st.text_input(
-                    "Maintenance",
-                    placeholder="Maintenance Done",
+                    "Status",
+                    placeholder="Status",
                 )
 
             with fcol7:
                 signed_input = st.text_input(
-                    "Inspected By:",
-                    placeholder="Inspector Name",
+                    "User",
+                    placeholder="User",
                 )
 
             if st.form_submit_button(label="Update Table", type="secondary", disabled=False, use_container_width=True):
