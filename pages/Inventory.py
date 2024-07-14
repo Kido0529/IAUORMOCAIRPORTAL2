@@ -77,8 +77,8 @@ with st.container():
     st.header("Inventory")
     st.write("")
     col1, col2 = st.columns([4,5])
-    rowvalraw = worksheet.row_values(5)
     rowlen = len(data)
+
     with col1:
         st.dataframe(data)
 
@@ -139,20 +139,23 @@ with st.container():
                 )
 
             if st.form_submit_button(label="Update Table", type="secondary", disabled=False, use_container_width=True):
-                cellrow = rowlen + 1
-                yearcolumn = 1
-                monthcolumn = 2
-                daycolumn = 3
-                accolumn = 4
-                regcolumn = 5
-                maincolumn = 6
-                signedcolumn = 7
-                worksheet.update_cell(cellrow, yearcolumn, year_input)
-                worksheet.update_cell(cellrow, monthcolumn, month_input)
-                worksheet.update_cell(cellrow, daycolumn, day_input)
-                worksheet.update_cell(cellrow, accolumn, ac_input)
-                worksheet.update_cell(cellrow, regcolumn, reg_input)
-                worksheet.update_cell(cellrow, maincolumn, main_input)
-                worksheet.update_cell(cellrow, signedcolumn, signed_input)
-                st.success("Table Updated")
-                st.rerun()
+                if ((ac_input != "") // (reg_input != "") // (main_input != "") // (signed_input != "")):
+                    cellrow = rowlen + 1
+                    yearcolumn = 1
+                    monthcolumn = 2
+                    daycolumn = 3
+                    accolumn = 4
+                    regcolumn = 5
+                    maincolumn = 6
+                    signedcolumn = 7
+                    worksheet.update_cell(cellrow, yearcolumn, year_input)
+                    worksheet.update_cell(cellrow, monthcolumn, month_input)
+                    worksheet.update_cell(cellrow, daycolumn, day_input)
+                    worksheet.update_cell(cellrow, accolumn, ac_input)
+                    worksheet.update_cell(cellrow, regcolumn, reg_input)
+                    worksheet.update_cell(cellrow, maincolumn, main_input)
+                    worksheet.update_cell(cellrow, signedcolumn, signed_input)
+                    st.success("Table Updated")
+                    st.rerun()
+                else:
+                    st.error("All Boxes Required")

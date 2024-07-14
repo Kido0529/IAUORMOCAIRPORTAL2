@@ -4,7 +4,7 @@ import streamlit as st
 import numpy
 
 # Main Streamlit app starts here
-st.set_page_config(page_title="Maintenance Logs", page_icon="🔧", layout="wide")
+st.set_page_config(page_title="Fleet", page_icon="✈", layout="wide")
 
 def check_password():
     """Returns `True` if the user had a correct password."""
@@ -67,7 +67,7 @@ credentials = { "type" : st.secrets["gcp_service_account"]["type"],
                 }
 gc = gs.service_account_from_dict(credentials)
 sh = gc.open("Sample-Maintenance-Log")
-worksheet = sh.get_worksheet(0)
+worksheet = sh.get_worksheet(2)
 data = worksheet.get_all_values()
 
 
@@ -78,8 +78,12 @@ with st.container():
     st.write("")
     col1, col2 = st.columns([4,5])
     rowlen = len(data)
-    registration = worksheet.col_values(5)
-
+    registrationraw = worksheet.col_values(5)
+    registration = list(dict.fromkeys(registrationraw))
+    acraw = worksheet.col_values(4)
+    ac = list(dict.fromkeys(acraw))
+    statraw = worksheet.col_values(6)
+    stat = list(dict.fromkeys(statraw))
     with col1:
         st.dataframe(data)
 
@@ -116,20 +120,23 @@ with st.container():
                 )
 
             with fcol4:
-                ac_input = st.text_input(
-                    "A/C Model",
-                    placeholder="A/C Model",
+                ac_input = st.selectbox(
+                    "Aircraft",
+                    ac,
+                    placeholder="A/C",
                 )
 
             with fcol5:
                 reg_input = st.selectbox(
                     "Registration",
-                    registration
+                    registration,
+                    placeholder="Registration",
                 )
 
             with fcol6:
-                main_input = st.text_input(
+                main_input = st.selectbox(
                     "Status",
+                    stat,
                     placeholder="Status",
                 )
 
@@ -140,20 +147,23 @@ with st.container():
                 )
 
             if st.form_submit_button(label="Update Table", type="secondary", disabled=False, use_container_width=True):
-                cellrow = rowlen + 1
-                yearcolumn = 1
-                monthcolumn = 2
-                daycolumn = 3
-                accolumn = 4
-                regcolumn = 5
-                maincolumn = 6
-                signedcolumn = 7
-                worksheet.update_cell(cellrow, yearcolumn, year_input)
-                worksheet.update_cell(cellrow, monthcolumn, month_input)
-                worksheet.update_cell(cellrow, daycolumn, day_input)
-                worksheet.update_cell(cellrow, accolumn, ac_input)
-                worksheet.update_cell(cellrow, regcolumn, reg_input)
-                worksheet.update_cell(cellrow, maincolumn, main_input)
-                worksheet.update_cell(cellrow, signedcolumn, signed_input)
-                st.success("Table Updated")
-                st.rerun()
+                if ((ac_input != "Aircraft") and (reg_input != "Registration") and (main_input != "") and (signed_input != "")):
+                    cellrow = rowlen + 1
+                    yearcolumn = 1
+                    monthcolumn = 2
+                    daycolumn = 3
+                    accolumn = 4
+                    regcolumn = 5
+                    maincolumn = 6
+                    signedcolumn = 7
+                    worksheet.update_cell(cellrow, yearcolumn, year_input)
+                    worksheet.update_cell(cellrow, monthcolumn, month_input)
+                    worksheet.update_cell(cellrow, daycolumn, day_input)
+                    worksheet.update_cell(cellrow, accolumn, ac_input)
+                    worksheet.update_cell(cellrow, regcolumn, reg_input)
+                    worksheet.update_cell(cellrow, maincolumn, main_input)
+                    worksheet.update_cell(cellrow, signedcolumn, signed_input)
+                    st.success("Table Updated")
+                    st.rerun()
+                else:
+                    st.error("All Boxes Required")

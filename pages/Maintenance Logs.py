@@ -78,7 +78,10 @@ with st.container():
     st.write("")
     col1, col2 = st.columns([4,5])
     rowlen = len(data)
-    registration = worksheet.col_values(5)
+    registrationraw = worksheet.col_values(5)
+    registration = list(dict.fromkeys(registrationraw))
+    acraw = worksheet.col_values(4)
+    ac = list(dict.fromkeys(acraw))
 
     with col1:
         st.dataframe(data)
@@ -116,15 +119,17 @@ with st.container():
                 )
 
             with fcol4:
-                ac_input = st.text_input(
-                    "A/C Model",
-                    placeholder="A/C Model",
+                ac_input = st.selectbox(
+                    "Aircraft",
+                    ac,
+                    placeholder = "Aircraft",
                 )
 
             with fcol5:
                 reg_input = st.selectbox(
                     "Registration",
-                    registration
+                    registration,
+                    placeholder = "Registration",
                 )
 
             with fcol6:
@@ -140,20 +145,23 @@ with st.container():
                 )
 
             if st.form_submit_button(label="Update Table", type="secondary", disabled=False, use_container_width=True):
-                cellrow = rowlen + 1
-                yearcolumn = 1
-                monthcolumn = 2
-                daycolumn = 3
-                accolumn = 4
-                regcolumn = 5
-                maincolumn = 6
-                signedcolumn = 7
-                worksheet.update_cell(cellrow, yearcolumn, year_input)
-                worksheet.update_cell(cellrow, monthcolumn, month_input)
-                worksheet.update_cell(cellrow, daycolumn, day_input)
-                worksheet.update_cell(cellrow, accolumn, ac_input)
-                worksheet.update_cell(cellrow, regcolumn, reg_input)
-                worksheet.update_cell(cellrow, maincolumn, main_input)
-                worksheet.update_cell(cellrow, signedcolumn, signed_input)
-                st.success("Table Updated")
-                st.rerun()
+                if ((ac_input != "Aircraft") and (reg_input != "Registration") and (main_input != "") and (signed_input != "")):
+                    cellrow = rowlen + 1
+                    yearcolumn = 1
+                    monthcolumn = 2
+                    daycolumn = 3
+                    accolumn = 4
+                    regcolumn = 5
+                    maincolumn = 6
+                    signedcolumn = 7
+                    worksheet.update_cell(cellrow, yearcolumn, year_input)
+                    worksheet.update_cell(cellrow, monthcolumn, month_input)
+                    worksheet.update_cell(cellrow, daycolumn, day_input)
+                    worksheet.update_cell(cellrow, accolumn, ac_input)
+                    worksheet.update_cell(cellrow, regcolumn, reg_input)
+                    worksheet.update_cell(cellrow, maincolumn, main_input)
+                    worksheet.update_cell(cellrow, signedcolumn, signed_input)
+                    st.success("Table Updated")
+                    st.rerun()
+                else:
+                    st.error("All Boxes Required")
