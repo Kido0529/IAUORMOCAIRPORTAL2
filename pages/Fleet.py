@@ -74,7 +74,7 @@ data = worksheet.get_all_values()
 # ---- Data Table and Edit ----
 with st.container():
     st.write("----")
-    st.header("Maintenance Logs")
+    st.header("Fleet Status")
     st.write("")
     col1, col2 = st.columns([4,5])
     rowlen = len(data)
@@ -129,8 +129,8 @@ with st.container():
 
             with fcol6:
                 main_input = st.text_input(
-                    "Maintenance",
-                    placeholder="Maintenance Done",
+                    "Status",
+                    placeholder="Status",
                 )
 
             with fcol7:
